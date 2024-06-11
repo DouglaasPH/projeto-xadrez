@@ -33,3 +33,9 @@ i {
 .jogador-dois {
     color: white;
 }
+
+.ponto-preto {
+    font-weight: 800;
+    font-size: 90%;
+    line-height: 4.5;
+}
