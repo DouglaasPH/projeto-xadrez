@@ -33,8 +33,8 @@ function criarTabuleiro() {
         if (pecaAColocar != " ") {
             quadrado.innerHTML = peca.replace("rook", posicaoDasPecas[i]);
             quadrado.firstChild.setAttribute("peca", posicaoDasPecas[i]);
-            if (i < 16) quadrado.firstChild.classList.add("jogador-um");
-            else if (i > 47) quadrado.firstChild.classList.add("jogador-dois");
+            if (i < 16) quadrado.firstChild.classList.add("jogador-preto");
+            else if (i > 47) quadrado.firstChild.classList.add("jogador-branco");
         }
 
         if (posicaoDosQuadradosBrancosEPretos[i] === "Branco") quadrado.classList.add("quadrado-branco");

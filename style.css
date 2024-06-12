@@ -1,3 +1,8 @@
+* {
+    margin: 0;
+    border: 0;
+}
+
 .gameBoard {
     display: flex;
     height: 520px;
@@ -6,36 +11,48 @@
     border: 4px solid black;
 }
 
-.quadrado-preto {
-    background-color: #544e4a;
+.quadrado-preto,
+.quadrado-branco {
     height: 65px;
     width: 65px;
     text-align: center;
-    line-height: 5;
+    margin: 0;
+    padding: 0;
+    border: none;
+}
+
+.quadrado-preto {
+    background-color: #544e4a;
 }
 
 .quadrado-branco {
     background-color: #b6b0ac;
-    height: 65px;
-    width: 65px;
-    text-align: center;
-    line-height: 5;
 }
 
 i {
     font-size: 40px;
+    height: 85%;
+    width: 100%;
+    padding-top: 10px;
 }
 
-.jogador-um {
+.jogador-preto {
     color: black;
+    height: 65px;
+    line-height: 5;
 }
 
-.jogador-dois {
+.jogador-branco {
     color: white;
+    height: 65px;
 }
 
 .ponto-preto {
     font-weight: 800;
     font-size: 90%;
     line-height: 4.5;
+}
+
+.borda {
+    border: 1px solid black;
 }
