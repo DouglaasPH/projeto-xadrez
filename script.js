@@ -3,6 +3,8 @@ const pecas = document.getElementsByTagName("i");
 const acessibilidade = document.querySelector(".vez-de-jogador");
 var casaAlvoDoClick = [];
 
+//TODO XEQUEMATE (VITÓRIA/DERROTA)
+
 function movimentarPeca(casaAtual) {
     const tipoDePeca = casaAtual.getElementsByTagName("div")[0].getAttribute("peca");
     const limiteLadoDireito = [8, 16, 24, 32, 40, 48, 56, 64];
@@ -127,40 +129,38 @@ function TrocarJogador() {
     quadrados.reverse();
 }
 
-//TODO criar funcionalidade: jogar pelo click
-//FASE PARA TESTES
+//FASE PARA TESTES (funcionalidade: jogar pelo click)
 function clickIniciado(event) {
-    //VERIFICAÇÃO SE A PEÇA CLICADA É DO JOGADOR DA VEZ DA JOGADA
-    //if (`jogador-${acessibilidade.textContent.toLowerCase()}` === event.target.parentElement.classList[0]) {
-    if (event.target.classList.contains("fa-solid") && !event.target.parentElement.classList.contains("borda")) {
-        //FASE PARA TESTES
-        quadrados.forEach(quadradoAtual => {
-            if (quadradoAtual.firstChild != null && quadradoAtual.innerHTML !== "⚫" && quadradoAtual.firstChild.classList.contains("borda")) {
-                console.log(quadradoAtual)
-                removerEColocarBorda(quadradoAtual.firstChild);
-                removerPontosPretos(quadradoAtual.firstChild, quadradoAtual);
-            }
-        });
+    //FASE PARA TESTES (VERIFICAÇÃO SE A PEÇA CLICADA PERTENCE AO JOGADOR DA VEZ)
+    if (`jogador-${acessibilidade.textContent.toLowerCase()}` === event.target.parentElement.classList[0]) {
+        if (event.target.classList.contains("fa-solid") && !event.target.parentElement.classList.contains("borda")) {
+            //FASE PARA TESTES
+            quadrados.forEach(quadradoAtual => {
+                if (quadradoAtual.firstChild != null && quadradoAtual.innerHTML !== "⚫" && quadradoAtual.firstChild.classList.contains("borda")) {
+                    console.log(quadradoAtual)
+                    removerEColocarBorda(quadradoAtual.firstChild);
+                    removerPontosPretos(quadradoAtual.firstChild, quadradoAtual);
+                }
+            });
 
-        movimentarPeca(event.target.parentElement.parentElement);
-        removerEColocarBorda(event.target.parentElement);
-        casaAlvoDoClick.push(event.target.parentElement.parentElement, event.target.parentElement)
+            movimentarPeca(event.target.parentElement.parentElement);
+            removerEColocarBorda(event.target.parentElement);
+            casaAlvoDoClick.push(event.target.parentElement.parentElement, event.target.parentElement)
+        }
+        else if (event.target.parentElement.classList.contains("borda")) {
+            removerEColocarBorda(event.target.parentElement);
+            removerPontosPretos(event.target.parentElement, event.target.parentElement.parentElement)
+            casaAlvoDoClick = [];
+        }
     }
-    else if (event.target.parentElement.classList.contains("borda")) {
-        removerEColocarBorda(event.target.parentElement);
-        removerPontosPretos(event.target.parentElement, event.target.parentElement.parentElement)
-        casaAlvoDoClick = [];
-    }
-    //TODO criar funcionalidade: clicar numa casa, a peça ir para a casa
-        //FASE PARA TESTES
+    //FASE PARA TESTES (funcionalidade: clicar numa casa, a peça ir para a casa)
     else if (!event.target.classList.contains("fa-solid") && event.target.classList.contains("ponto-preto")) {
         removerEColocarBorda(casaAlvoDoClick[1]);
         removerPontosPretos(casaAlvoDoClick[1], casaAlvoDoClick[0])
         event.target.appendChild(casaAlvoDoClick[1])
         casaAlvoDoClick = [];
         TrocarJogador();
-    }
-    console.log(event.target.parentElement);
+    } else alert(`Não é sua vez!`);
 }
 
 function dragOverIniciado(event) {
@@ -168,8 +168,12 @@ function dragOverIniciado(event) {
 }
 
 function dragStartIniciado(event) {
-    event.dataTransfer.setData('text/plain', event.target.id);
-    movimentarPeca(event.target);
+    //FASE PARA TESTES (VERIFICAÇÃO SE A PEÇA CLICADA PERTENCE AO JOGADOR DA VEZ)
+    console.log(event.target.firstChild)
+    if (`jogador-${acessibilidade.textContent.toLowerCase()}` === event.target.firstChild.classList[0]) {
+        event.dataTransfer.setData('text/plain', event.target.id);
+        movimentarPeca(event.target);
+    } else alert(`Não é sua vez!`);
 }
 
 function dropIniciado(event) {
@@ -184,8 +188,7 @@ function dropIniciado(event) {
         casaDestino.innerHTML = "";
         removerPontosPretos(pecaParaMover, document.getElementById(idDaCasaDaPecaParaMover));
         casaDestino.appendChild(pecaParaMover)
-        //TODO criar funcionalidade: alterar entre jogadores (branco/preto)
-        //FASE PARA TESTES
+        //FASE PARA TESTES (criar funcionalidade: alterar entre jogadores (branco/preto))
         TrocarJogador();
     } else {
         alert("Você não pode ir para esta casa. Escolha uma casa com ponto preto.")
