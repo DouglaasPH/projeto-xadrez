@@ -1,113 +1,8 @@
 const quadrados = Array.from(document.querySelectorAll(".quadrado"));
 const pecas = document.getElementsByTagName("i");
 const acessibilidade = document.querySelector(".vez-de-jogador");
-var casaAlvoDoClick = [];
 
-//TODO XEQUEMATE (VITÓRIA/DERROTA)
-
-function movimentarPeca(casaAtual) {
-    const tipoDePeca = casaAtual.getElementsByTagName("div")[0].getAttribute("peca");
-    const limiteLadoDireito = [8, 16, 24, 32, 40, 48, 56, 64];
-    const limiteLadoEsquerdo = [-1, 7, 15, 23, 31, 39, 47, 55,];
-
-    switch (tipoDePeca) {
-        //TODO terminar o movimentador para cada peça
-        case "pawn":
-            const movimento = [quadrados[Number(casaAtual.id) + 8], quadrados[Number(casaAtual.id) + 1], quadrados[Number(casaAtual.id) - 1]];
-
-            if (movimento[0].children.length == 0) {
-                movimento[0].innerHTML = "⚫";
-                movimento[0].classList.add("ponto-preto");
-            }
-            if (movimento[1].children.length == 0 && !limiteLadoDireito.includes(Number(casaAtual.id) + 1)) {
-                movimento[1].innerHTML = "⚫";
-                movimento[1].classList.add("ponto-preto");
-            }
-
-            if (movimento[2].children.length == 0 && !limiteLadoEsquerdo.includes(Number(casaAtual.id) - 1)) {
-                movimento[2].innerHTML = "⚫";
-                movimento[2].classList.add("ponto-preto");
-            }
-            ;
-
-            break;
-        case "rook":
-            let continuarParaFrente = true;
-            let continuarParaTras = true;
-            let continuarParaDireita = true;
-            let continuarParaEsquerda = true;
-
-            for (let i = 1; i < 8; i++) {
-                if (continuarParaFrente && Number(casaAtual.id) + i * (-8) <= 63 && quadrados[Number(casaAtual.id) + i * 8].children.length == 0) {
-                    quadrados[Number(casaAtual.id) + i * 8].innerHTML = "⚫";
-                    quadrados[Number(casaAtual.id) + i * 8].classList.add("ponto-preto");
-                } else continuarParaFrente = false;
-
-                if (continuarParaTras && Number(casaAtual.id) + i * (-8) >= 0 && quadrados[Number(casaAtual.id) + i * (-8)].children.length == 0) {
-                    quadrados[Number(casaAtual.id) + i * (-8)].innerHTML = "⚫";
-                    quadrados[Number(casaAtual.id) + i * (-8)].classList.add("ponto-preto");
-                } else continuarParaTras = false;
-
-                if (continuarParaDireita && !limiteLadoDireito.includes(Number(casaAtual.id) + i) && quadrados[Number(casaAtual.id) + i].children.length == 0) {
-                    quadrados[Number(casaAtual.id) + i].innerHTML = "⚫";
-                    quadrados[Number(casaAtual.id) + i].classList.add("ponto-preto");
-                } else continuarParaDireita = false;
-
-                if (continuarParaEsquerda && !limiteLadoEsquerdo.includes(Number(casaAtual.id) - i) && quadrados[Number(casaAtual.id) - i].children.length == 0) {
-                    quadrados[Number(casaAtual.id) - i].innerHTML = "⚫";
-                    quadrados[Number(casaAtual.id) - i].classList.add("ponto-preto");
-                } else continuarParaEsquerda = false;
-            }
-            break;
-    
-        default:
-            break;
-    }
-};
-
-function removerPontosPretos(pecaParaMover, casaInicio) {
-    console.log(pecaParaMover, casaInicio);
-    switch (pecaParaMover.getAttribute("peca")) {
-        //TODO terminar o removedor de pontos pretos cada peça
-        case "pawn":
-            const movimento = [quadrados[Number(casaInicio.id) + 8], quadrados[Number(casaInicio.id) + 1], quadrados[Number(casaInicio.id) - 1]];
-            movimento.forEach(function (quadrado) {
-                if (quadrado.innerHTML == "⚫") {
-                    quadrado.innerHTML = "";
-                    quadrado.classList.remove("ponto-preto")
-                }
-            });
-            break;
-        case "rook":
-            for (let i = 1; i < 8; i++) {
-                if (Number(casaInicio.id) + i * 8 <= 63 && quadrados[Number(casaInicio.id) + i * 8].innerHTML == "⚫") {
-                    quadrados[Number(casaInicio.id) + i * 8].innerHTML = "";
-                    quadrados[Number(casaInicio.id) + i * 8].classList.remove("ponto-preto")
-                }
-                if (Number(casaInicio.id) + i * (-8) >= 0 && quadrados[Number(casaInicio.id) + i * (-8)].innerHTML == "⚫") {
-                    quadrados[Number(casaInicio.id) + i * (-8)].innerHTML = "";
-                    quadrados[Number(casaInicio.id) + i * (-8)].classList.remove("ponto-preto")
-                }
-                if (Number(casaInicio.id) + i + 1 <= 63 && quadrados[Number(casaInicio.id) + i].innerHTML == "⚫") {
-                    quadrados[Number(casaInicio.id) + i].innerHTML = "";
-                    quadrados[Number(casaInicio.id) + i].classList.remove("ponto-preto")
-                }
-                if (Number(casaInicio.id) - i >= 0 && quadrados[Number(casaInicio.id) - i].innerHTML == "⚫") {
-                    quadrados[Number(casaInicio.id) - i].innerHTML = "";
-                    quadrados[Number(casaInicio.id) - i].classList.remove("ponto-preto")
-                }
-            }
-        default:
-            break;
-    }
-};
-
-function removerEColocarBorda(divDaBorda) {
-    console.log(divDaBorda)
-    if (!divDaBorda.classList.contains("borda")) {
-        divDaBorda.classList.add("borda");
-    } else divDaBorda.classList.remove("borda");
-}
+//TODO XEQUE-MATE (VITÓRIA/DERROTA)
 
 function TrocarJogador() {
     let reverterId = [];
@@ -129,75 +24,232 @@ function TrocarJogador() {
     quadrados.reverse();
 }
 
-//FASE PARA TESTES (funcionalidade: jogar pelo click)
-function clickIniciado(event) {
-    //FASE PARA TESTES (VERIFICAÇÃO SE A PEÇA CLICADA PERTENCE AO JOGADOR DA VEZ)
-    if (`jogador-${acessibilidade.textContent.toLowerCase()}` === event.target.parentElement.classList[0]) {
-        if (event.target.classList.contains("fa-solid") && !event.target.parentElement.classList.contains("borda")) {
-            //FASE PARA TESTES
-            quadrados.forEach(quadradoAtual => {
-                if (quadradoAtual.firstChild != null && quadradoAtual.innerHTML !== "⚫" && quadradoAtual.firstChild.classList.contains("borda")) {
-                    console.log(quadradoAtual)
-                    removerEColocarBorda(quadradoAtual.firstChild);
-                    removerPontosPretos(quadradoAtual.firstChild, quadradoAtual);
-                }
-            });
+function movimentarPeca(pecaParaMover, casaParaReceber) {
+    const limiteLadoDireito = [8, 16, 24, 32, 40, 48, 56, 64];
+    const limiteLadoEsquerdo = [-1, 7, 15, 23, 31, 39, 47, 55];
+    const tipoDePeca = pecaParaMover.getAttribute("peca");
+    let subtraindoDoisValores = Number(casaParaReceber.id) - Number(pecaParaMover.parentElement.id);
+    let continuarOuPararLoop = true;
 
-            movimentarPeca(event.target.parentElement.parentElement);
-            removerEColocarBorda(event.target.parentElement);
-            casaAlvoDoClick.push(event.target.parentElement.parentElement, event.target.parentElement)
-        }
-        else if (event.target.parentElement.classList.contains("borda")) {
-            removerEColocarBorda(event.target.parentElement);
-            removerPontosPretos(event.target.parentElement, event.target.parentElement.parentElement)
-            casaAlvoDoClick = [];
-        }
+    switch (tipoDePeca) {
+        case "pawn":
+
+            if (pecaParaMover.getAttribute("nao-movido") == "true" && Number(casaParaReceber.id) == Number(pecaParaMover.parentElement.id) + 8 || Number(casaParaReceber.id) == Number(pecaParaMover.parentElement.id) + 16 && casaParaReceber.firstChild == null) {
+                casaParaReceber.appendChild(pecaParaMover);
+                pecaParaMover.setAttribute("nao-movido", false);
+                TrocarJogador();
+            }
+            else if (pecaParaMover.getAttribute("nao-movido") == "false" && Number(casaParaReceber.id) == Number(pecaParaMover.parentElement.id) + 8 && casaParaReceber.firstChild == null) {
+                casaParaReceber.appendChild(pecaParaMover);
+                TrocarJogador();
+            }
+            else if (casaParaReceber !== null) {
+                if (Number(casaParaReceber.id) == Number(pecaParaMover.parentElement.id) + 7) {
+                    casaParaReceber.removeChild(casaParaReceber.firstChild);
+                    casaParaReceber.appendChild(pecaParaMover);
+                    TrocarJogador();
+                }
+                else if (Number(casaParaReceber.id) == Number(pecaParaMover.parentElement.id) + 9) {
+                    casaParaReceber.removeChild(casaParaReceber.firstChild);
+                    casaParaReceber.appendChild(pecaParaMover);
+                    TrocarJogador();
+                }
+            }
+            break;
+        case "queen":
+        case "rook":
+            //FASE PARA TESTES
+            let casasParaATorreIr = {
+                subindo: [8, 16, 24, 32, 40, 48, 56],
+                descendo: [-8, -16, -24, -32, -40, -48, -56],
+                esquerda: [1, 2, 3, 4, 5, 6, 7],
+                direita: [-1, -2, -3, -4, -5, -6, -7]
+            };
+
+            if (casasParaATorreIr.subindo.includes(subtraindoDoisValores)) {
+                let posicaoArraySubindo = casasParaATorreIr.subindo.indexOf(subtraindoDoisValores);
+
+                for (let i = 0; i < posicaoArraySubindo + 1; i++) {
+                    const divAtualDoLoop = quadrados[Number(pecaParaMover.parentElement.id) + casasParaATorreIr.subindo[posicaoArraySubindo - i]];
+
+                    if (continuarOuPararLoop && divAtualDoLoop.firstChild?.classList[0] === pecaParaMover.classList[0] /*!== null*/) {
+                        continuarOuPararLoop = false;
+                    }
+                    if (continuarOuPararLoop && divAtualDoLoop.firstChild !== null && i !== 0) {
+                        continuarOuPararLoop = false;
+                    }
+                    if (continuarOuPararLoop && i == posicaoArraySubindo) {
+
+                        if (casaParaReceber.firstChild !== null) {
+                            casaParaReceber.removeChild(casaParaReceber.firstChild);
+                            casaParaReceber.appendChild(pecaParaMover);
+                            TrocarJogador();
+                        } else if (casaParaReceber.firstChild == null) {
+                            casaParaReceber.appendChild(pecaParaMover);
+                            TrocarJogador();
+                        }
+                    }
+                }
+            }
+            else if (casasParaATorreIr.descendo.includes(subtraindoDoisValores)) {
+                let posicaoArrayDescendo = casasParaATorreIr.descendo.indexOf(subtraindoDoisValores);
+            
+                for (let i = 0; i < posicaoArrayDescendo + 1; i++) {
+                    const divAtualDoLoop = quadrados[Number(pecaParaMover.parentElement.id) + casasParaATorreIr.descendo[posicaoArrayDescendo - i]];
+
+                    if (continuarOuPararLoop && divAtualDoLoop.firstChild?.classList[0] === pecaParaMover.classList[0] /*!== null*/) {
+                        continuarOuPararLoop = false;
+                    }
+                    if (continuarOuPararLoop && divAtualDoLoop.firstChild !== null && i !== 0) {
+                        continuarOuPararLoop = false;
+                    }
+                    if (continuarOuPararLoop && i == posicaoArrayDescendo) {
+                        if (casaParaReceber.firstChild !== null) {
+                            casaParaReceber.removeChild(casaParaReceber.firstChild);
+                            casaParaReceber.appendChild(pecaParaMover);
+                            TrocarJogador();
+                        } else if (casaParaReceber.firstChild == null) {
+                            casaParaReceber.appendChild(pecaParaMover);
+                            TrocarJogador();
+                        }
+                    }
+                }
+            }
+            else if (casasParaATorreIr.direita.includes(subtraindoDoisValores)) {
+                for (let i = 1; i < Math.abs(subtraindoDoisValores) + 1; i++) {
+                    if (limiteLadoEsquerdo.includes(Number(pecaParaMover.parentElement.id) - i)) {
+                        continuarOuPararLoop = false;
+                    }
+                    if (quadrados[Number(pecaParaMover.parentElement.id) - i].firstChild !== null && i < Math.abs(subtraindoDoisValores)) {
+                        continuarOuPararLoop = false;
+                    }
+                    if (quadrados[Number(pecaParaMover.parentElement.id) - i].firstChild?.classList[0] === pecaParaMover.classList[0]) {
+                        continuarOuPararLoop = false;
+                    }
+                    if (continuarOuPararLoop && Number(pecaParaMover.parentElement.id) - i === Number(casaParaReceber.id) && casaParaReceber.firstChild == null) {
+                        casaParaReceber.appendChild(pecaParaMover);
+                        TrocarJogador();
+                    } else if (continuarOuPararLoop && Number(pecaParaMover.parentElement.id) - i === Number(casaParaReceber.id) && casaParaReceber.firstChild !== null) {
+                        casaParaReceber.removeChild(casaParaReceber.firstChild);
+                        casaParaReceber.appendChild(pecaParaMover);
+                        TrocarJogador();
+                    }
+                }
+            }
+            else if (casasParaATorreIr.esquerda.includes(subtraindoDoisValores)) {
+                for (let i = 1; i < Math.abs(subtraindoDoisValores) + 1; i++) {
+                    if (limiteLadoDireito.includes(Number(pecaParaMover.parentElement.id) + i)) {
+                        continuarOuPararLoop = false;
+                    }
+                    if (quadrados[Number(pecaParaMover.parentElement.id) + i].firstChild !== null && i < Math.abs(subtraindoDoisValores)) {
+                        continuarOuPararLoop = false;
+                    }
+                    if (quadrados[Number(pecaParaMover.parentElement.id) + i].firstChild?.classList[0] === pecaParaMover.classList[0]) {
+                        continuarOuPararLoop = false;
+                    }
+                    if (continuarOuPararLoop && Number(pecaParaMover.parentElement.id) + i === Number(casaParaReceber.id) && casaParaReceber.firstChild == null) {
+                        casaParaReceber.appendChild(pecaParaMover);
+                        TrocarJogador();
+                    } else if (continuarOuPararLoop && Number(pecaParaMover.parentElement.id) + i === Number(casaParaReceber.id) && casaParaReceber.firstChild !== null) {
+                        casaParaReceber.removeChild(casaParaReceber.firstChild);
+                        casaParaReceber.appendChild(pecaParaMover);
+                        TrocarJogador();
+                    }
+                }
+            }
+            //RETIRADO O "BREAK" DO CASO "ROOK, PARA O CASO "QUEEN" CONSEGUIR IR EM DOIS CASOS
+        case "queen":
+        case "bishop":
+            //TODO: FASE PARA TESTE
+            let casasParaIr = {
+                diagonalSuperiorDireita: [7, 14, 21, 28, 35, 42, 49],
+                diagonalInferiorDireita: [-7, -14, -21, -28, -35, -49],
+                diagonalSuperiorEsquerda: [9, 18, 27, 36, 45, 54, 63],
+                diagonalInferiorEsquerda: [-9, -18, -27, -36, -45, -54, -63]
+            };
+            for (const chaveDasPropriedades in casasParaIr) {
+                const propriedadeAtualDoObjeto = casasParaIr[chaveDasPropriedades];
+
+                if (propriedadeAtualDoObjeto.includes(subtraindoDoisValores)) {
+                    let posicaoArrayAtual = propriedadeAtualDoObjeto.indexOf(subtraindoDoisValores);
+
+                    for (let i = 0; i < posicaoArrayAtual + 1; i++) {
+                        const divAtualDoLoop = quadrados[Number(pecaParaMover.parentElement.id) + propriedadeAtualDoObjeto[posicaoArrayAtual - i]];
+
+                        if (divAtualDoLoop.firstChild !== null && divAtualDoLoop !== casaParaReceber) {
+                            continuarOuPararLoop = false;
+                        }
+                        if (divAtualDoLoop.firstChild?.classList[0] === pecaParaMover.classList[0]) {
+                            continuarOuPararLoop = false;
+                        }
+                        if (continuarOuPararLoop && i === posicaoArrayAtual) {
+                            if (casaParaReceber.firstChild !== null) {
+                                casaParaReceber.removeChild(casaParaReceber.firstChild);
+                                casaParaReceber.appendChild(pecaParaMover);
+                                TrocarJogador();
+                            } else {
+                                casaParaReceber.appendChild(pecaParaMover);
+                                TrocarJogador();
+                            }
+                        }
+                    }
+                }
+            }
+            break;
+        case "knight":
+            let moverCavalo = true;
+            let casasParaCavaloIr = {
+                superior: [17, 15],
+                inferior: [-17, -15],
+                esquerda: [-10, 6],
+                direita: [10, -6]
+            }
+            for (const chaveDasPropriedades in casasParaCavaloIr) {
+                const propriedadeAtualDoObjeto = casasParaCavaloIr[chaveDasPropriedades];
+
+                if (propriedadeAtualDoObjeto.includes(subtraindoDoisValores)) {
+                    if (casaParaReceber.firstChild?.classList[0] === pecaParaMover.classList[0]) {
+                        moverCavalo = false;
+                    }
+                    if (moverCavalo && casaParaReceber.firstChild !== null) {
+                        casaParaReceber.removeChild(casaParaReceber.firstChild);
+                        casaParaReceber.appendChild(pecaParaMover);
+                        TrocarJogador();
+                    } else if (moverCavalo && casaParaReceber.firstChild == null) {
+                        casaParaReceber.appendChild(pecaParaMover);
+                        TrocarJogador();
+                    }
+                }
+            }
+            break;
+        case "king":
+            const casasParaReiIr = [-1, 1, -7, 7, -8, 8, -9, 9];
+            //TODO
+            break;
     }
-    //FASE PARA TESTES (funcionalidade: clicar numa casa, a peça ir para a casa)
-    else if (!event.target.classList.contains("fa-solid") && event.target.classList.contains("ponto-preto")) {
-        removerEColocarBorda(casaAlvoDoClick[1]);
-        removerPontosPretos(casaAlvoDoClick[1], casaAlvoDoClick[0])
-        event.target.appendChild(casaAlvoDoClick[1])
-        casaAlvoDoClick = [];
-        TrocarJogador();
-    } else alert(`Não é sua vez!`);
+}
+        
+
+function dragStartIniciado(event) {
+    event.dataTransfer.setData('text/plain', event.target.id);
+    if (`jogador-${acessibilidade.textContent.toLowerCase()}` !== event.target.firstChild.classList[0]) alert("Não é sua vez!");
 }
 
 function dragOverIniciado(event) {
     event.preventDefault();
 }
 
-function dragStartIniciado(event) {
-    //FASE PARA TESTES (VERIFICAÇÃO SE A PEÇA CLICADA PERTENCE AO JOGADOR DA VEZ)
-    console.log(event.target.firstChild)
-    if (`jogador-${acessibilidade.textContent.toLowerCase()}` === event.target.firstChild.classList[0]) {
-        event.dataTransfer.setData('text/plain', event.target.id);
-        movimentarPeca(event.target);
-    } else alert(`Não é sua vez!`);
-}
-
 function dropIniciado(event) {
-    event.preventDefault();
+   event.preventDefault();
     const idDaCasaDaPecaParaMover = event.dataTransfer.getData('text/plain');
     const pecaParaMover = document.getElementById(idDaCasaDaPecaParaMover).getElementsByTagName("div")[0];
-    pecaParaMover.classList.remove("borda");
-    const casaDestino = event.target;
-
-    if (casaDestino.classList.contains("ponto-preto")) {
-        casaDestino.classList.remove("ponto-preto")
-        casaDestino.innerHTML = "";
-        removerPontosPretos(pecaParaMover, document.getElementById(idDaCasaDaPecaParaMover));
-        casaDestino.appendChild(pecaParaMover)
-        //FASE PARA TESTES (criar funcionalidade: alterar entre jogadores (branco/preto))
-        TrocarJogador();
-    } else {
-        alert("Você não pode ir para esta casa. Escolha uma casa com ponto preto.")
-    }
+    let casaParaReceber = event.target;
+    if (event.target.tagName === "I") casaParaReceber = event.target.parentElement.parentElement;
+    movimentarPeca(pecaParaMover, casaParaReceber);
 }
 
 quadrados.forEach(quadrado => {
     quadrado.addEventListener("dragstart", dragStartIniciado);
     quadrado.addEventListener("dragover", dragOverIniciado);
     quadrado.addEventListener("drop", dropIniciado);
-    quadrado.addEventListener("click", clickIniciado);
 });
