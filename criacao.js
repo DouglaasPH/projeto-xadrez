@@ -35,6 +35,7 @@ function criarTabuleiro() {
             quadrado.firstChild.setAttribute("peca", posicaoDasPecas[i]);
             if (i < 16) quadrado.firstChild.classList.add("jogador-preto");
             else if (i > 47) quadrado.firstChild.classList.add("jogador-branco");
+            if (pecaAColocar == "pawn") quadrado.firstChild.setAttribute("nao-movido", true);
         }
 
         if (posicaoDosQuadradosBrancosEPretos[i] === "Branco") quadrado.classList.add("quadrado-branco");
