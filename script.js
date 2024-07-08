@@ -427,11 +427,13 @@ function movimentarPeca(pecaParaMover, casaParaReceber) {
             
             if (casasParaReiIr.includes(subtraindoDoisValores)) {
                 if (casaParaReceber.firstChild == null) {
+                    if (moverApenasRei === true) moverApenasRei = false;
                     casaParaReceber.appendChild(pecaParaMover);
                     xeque();
                     TrocarJogador();
                 }
                 else if (casaParaReceber.firstChild !== null && casaParaReceber.firstChild?.classList[0] !== pecaParaMover.classList[0]) {
+                    if (moverApenasRei === true) moverApenasRei = false;
                     casaParaReceber.removeChild(casaParaReceber.firstChild);
                     casaParaReceber.appendChild(pecaParaMover);
                     xeque();
@@ -465,7 +467,8 @@ function dropIniciado(event) {
     if (moverApenasRei === true) {
         if (pecaParaMover.getAttribute("peca") === "king") {
             movimentarPeca(pecaParaMover, casaParaReceber);
-            moverApenasRei = false;
+            //TODO: MOVER PARA A FUNÇÃO MOVIMENTAR
+            //moverApenasRei = false;
         } else return;
     } else {
         movimentarPeca(pecaParaMover, casaParaReceber);
